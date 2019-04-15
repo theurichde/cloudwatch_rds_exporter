@@ -38,6 +38,8 @@ if __name__ == "__main__":
         yaml.dump(em_enabled_instances, yaml_file, default_flow_style=False)
 
     rds_exporter = '/rds_exporter \
-                --config.file=/config.yml'
+                --config.file=/config.yml \
+                --log.level="debug" \
+                --log.trace'
 
     subprocess.run(rds_exporter, shell=True)

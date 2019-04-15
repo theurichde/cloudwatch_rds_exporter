@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
 
+import os
 import boto3
 import yaml
 import subprocess
 
 
 REGION = 'eu-west-1'
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'staging')
 
 
 def get_db_instances(region, page_size=20):
@@ -29,8 +31,9 @@ if __name__ == "__main__":
     em_enabled_instances = {'instances': []}
 
     for instance in get_db_instances(REGION):
-        if instance.get('EnhancedMonitoringResourceArn', None):
-            instance_name = instance['DBInstanceIdentifier']
+        instance_name = instance['DBInstanceIdentifier']
+        if (instance.get('EnhancedMonitoringResourceArn', None) and
+                instance_name.endswith(ENVIRONMENT)):
             instance = {'instance': instance_name, 'region': REGION}
             em_enabled_instances['instances'].append(instance)
 

@@ -1,4 +1,4 @@
-FROM golang:1.11.2 AS builder
+FROM golang:1.12 AS builder
 
 WORKDIR /go/src/github.com/hellofresh/rds_exporter
 COPY . ./
@@ -11,7 +11,10 @@ RUN apt-get update -y \
         ca-certificates \
         python3-boto3 \
         python3-yaml \
- && rm -rf /var/cache/apt/*
+ && rm -rf /var/cache/apt/* \
+ && useradd -ms /bin/bash rds_exporter
+
+USER rds_exporter
 
 COPY --from=builder /go/src/github.com/hellofresh/rds_exporter/rds_exporter /
 COPY entry.py /

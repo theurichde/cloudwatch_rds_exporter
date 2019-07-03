@@ -12,11 +12,13 @@ RUN apt-get update -y \
         python3-boto3 \
         python3-yaml \
  && rm -rf /var/cache/apt/* \
- && useradd -ms /bin/bash rds_exporter
+ && useradd -ms /bin/bash rds_exporter \
+ && mkdir /rds_exporter \
+ && chown rds_exporter:rds_exporter /rds_exporter
 
 USER rds_exporter
 
-COPY --from=builder /go/src/github.com/hellofresh/rds_exporter/rds_exporter /
+COPY --from=builder /go/src/github.com/hellofresh/rds_exporter/rds_exporter /rds_exporter/rds_exporter
 COPY entry.py /
 
 EXPOSE 9042

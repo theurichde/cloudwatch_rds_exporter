@@ -37,10 +37,10 @@ if __name__ == "__main__":
             instance = {'instance': instance_name, 'region': REGION}
             em_enabled_instances['instances'].append(instance)
 
-    with open('/config.yml', 'w') as yaml_file:
+    with open('/rds_exporter/config.yml', 'w') as yaml_file:
         yaml.dump(em_enabled_instances, yaml_file, default_flow_style=False)
 
-    rds_exporter = '/rds_exporter \
-                --config.file=/config.yml'
+    rds_exporter = '/rds_exporter/rds_exporter \
+                --config.file=/rds_exporter/config.yml'
 
     subprocess.run(rds_exporter, shell=True)

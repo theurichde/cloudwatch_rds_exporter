@@ -23,4 +23,4 @@ RUN pip install -r /requirements.txt
 USER rds_exporter
 
 EXPOSE 9042
-ENTRYPOINT ["/usr/bin/python3", "/entry.py"]
+ENTRYPOINT ["/usr/local/bin/python3", "/entry.py"]

@@ -22,8 +22,8 @@ type Collector struct {
 
 // Maximal and minimal metrics update interval.
 const (
-	maxInterval = 10 * time.Second
-	minInterval = 2 * time.Second
+	maxInterval = 30 * time.Second
+	minInterval = 10 * time.Second
 )
 
 // NewCollector creates new collector and starts scrapers.

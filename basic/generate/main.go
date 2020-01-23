@@ -97,6 +97,7 @@ var (
 		// "ReadIOPS",
 		"ReadLatency",
 		// "ReadThroughput",
+		"ReplicaLag",
 		// "ResultSetCacheHitRatio",
 		// "SelectLatency",
 		// "SelectThroughput",

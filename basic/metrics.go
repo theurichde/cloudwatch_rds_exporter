@@ -30,7 +30,7 @@ var Metrics = []Metric{
 			"node_cpu_average",
 			"The percentage of CPU utilization. Units: Percent",
 			[]string{"instance", "region"},
-			map[string]string{"cpu": "All", "mode": "total"},
+			map[string]string{"cpu":"All", "mode":"total"},
 		),
 	},
 	{
@@ -65,6 +65,15 @@ var Metrics = []Metric{
 		Desc: prometheus.NewDesc(
 			"aws_rds_read_latency_average",
 			"The average amount of time taken per disk I/O operation. Units: Seconds",
+			[]string{"instance", "region"},
+			map[string]string(nil),
+		),
+	},
+	{
+		Name: "ReplicaLag",
+		Desc: prometheus.NewDesc(
+			"aws_rds_replica_lag_average",
+			"The amount of time a Read Replica DB instance lags behind the source DB instance. Applies to MySQL, MariaDB, and PostgreSQL Read Replicas. Units: Seconds",
 			[]string{"instance", "region"},
 			map[string]string(nil),
 		),

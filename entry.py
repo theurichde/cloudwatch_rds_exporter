@@ -38,9 +38,9 @@ def is_applicable(instance):
     instance_name = instance['DBInstanceIdentifier']
     instance_arn = instance['DBInstanceArn']
     instance_tags = get_rds_tags(instance_arn)
-    instance_enhanced_monitoring_arn = instance.get('EnhancedMonitoringResourceArn', None)
+    instance_enhanced_monitoring_interval = instance.get('MonitoringInterval', 0)
     instance_environment_tag = instance_tags.get('Environment', '')
-    return instance_enhanced_monitoring_arn and (instance_name.lower().endswith(ENVIRONMENT.lower()) or instance_environment_tag.lower() == ENVIRONMENT.lower())
+    return instance_enhanced_monitoring_interval > 0 and (instance_name.lower().endswith(ENVIRONMENT.lower()) or instance_environment_tag.lower() == ENVIRONMENT.lower())
 
 
 if __name__ == "__main__":

@@ -68,7 +68,7 @@ var (
 		// "BinLogDiskUsage",
 		// "BlockedTransactions",
 		// "BufferCacheHitRatio",
-		"BurstBalance",
+		// "BurstBalance",
 		// "CommitLatency",
 		// "CommitThroughput",
 		"CPUCreditBalance",

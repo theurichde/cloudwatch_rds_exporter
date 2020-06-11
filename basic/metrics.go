@@ -7,15 +7,6 @@ import (
 
 var Metrics = []Metric{
 	{
-		Name: "BurstBalance",
-		Desc: prometheus.NewDesc(
-			"aws_rds_burst_balance_average",
-			"The percent of General Purpose SSD (gp2) burst-bucket I/O credits available. Units: Percent",
-			[]string{"instance", "region"},
-			map[string]string(nil),
-		),
-	},
-	{
 		Name: "CPUCreditBalance",
 		Desc: prometheus.NewDesc(
 			"aws_rds_cpu_credit_balance_average",
@@ -39,7 +30,7 @@ var Metrics = []Metric{
 			"node_cpu_average",
 			"The percentage of CPU utilization. Units: Percent",
 			[]string{"instance", "region"},
-			map[string]string{"cpu": "All", "mode": "total"},
+			map[string]string{"cpu":"All", "mode":"total"},
 		),
 	},
 	{

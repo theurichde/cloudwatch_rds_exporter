@@ -64,19 +64,21 @@ func (s *scraper) scrape(ctx context.Context) map[string][]prometheus.Metric {
 
 	// LogStreamNames parameter supports up to 100 items.
 	// https://docs.aws.amazon.com/AmazonCloudWatchLogs/latest/APIReference/API_FilterLogEvents.html
-	for i := 0; len(s.logStreamNames)-(100*i) > 0; i++ {
-		slice_start := i * 100
-		slice_end := slice_start + 100
-		if slice_end > len(s.logStreamNames) {
-			slice_end = len(s.logStreamNames)
+	streamCount := len(s.logStreamNames)
+	for i := 0; i < streamCount; i += 100 {
+		sliceStart := i
+		sliceEnd := i + 100
+		if sliceEnd > streamCount {
+			sliceEnd = streamCount
 		}
 
 		input := &cloudwatchlogs.FilterLogEventsInput{
 			LogGroupName:   aws.String("RDSOSMetrics"),
-			LogStreamNames: aws.StringSlice(s.logStreamNames[slice_start:slice_end]),
+			LogStreamNames: aws.StringSlice(s.logStreamNames[sliceStart:sliceEnd]),
 			StartTime:      aws.Int64(aws.TimeUnixMilli(s.nextStartTime)),
 		}
-		s.logger.Debugf("Requesting metrics since %s (last %s).", s.nextStartTime.UTC(), time.Since(s.nextStartTime))
+
+		s.logger.With("next_start", s.nextStartTime.UTC()).With("since_last", time.Since(s.nextStartTime)).Debugf("Requesting metrics")
 
 		collectAllMetrics := func(output *cloudwatchlogs.FilterLogEventsOutput, lastPage bool) bool {
 			for _, event := range output.Events {
@@ -92,7 +94,7 @@ func (s *scraper) scrape(ctx context.Context) map[string][]prometheus.Metric {
 					}
 				}
 				if instance == nil {
-					l.Errorf("Failed to find instance.")
+					l.Errorf("Failed to find instance")
 					continue
 				}
 				l = l.With("region", instance.Region).With("instance", instance.Instance)
@@ -111,7 +113,7 @@ func (s *scraper) scrape(ctx context.Context) map[string][]prometheus.Metric {
 				timestamp := aws.MillisecondsTimeValue(event.Timestamp)
 				metrics := osMetrics.makePrometheusMetrics(instance.Region)
 				allMetrics[instance.ResourceID][timestamp] = metrics
-				l.Debugf("Timestamp from Message: %s.", osMetrics.Timestamp.UTC())
+				s.logger.With("timestamp", osMetrics.Timestamp.UTC()).Debugf("Timestamp from Message")
 			}
 
 			return true // continue pagination

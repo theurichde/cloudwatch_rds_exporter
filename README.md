@@ -1,8 +1,4 @@
-# Pipenv
-`pipenv lock --keep-outdated -r > requirements.txt`
-
-
-# CloudWatch Exporter
+# CloudWatch Prometheus Exporter
 
 [![Build Status](https://travis-ci.org/percona/rds_exporter.svg)](https://travis-ci.org/percona/rds_exporter)
 [![Go Report Card](https://goreportcard.com/badge/github.com/percona/rds_exporter)](https://goreportcard.com/report/github.com/percona/rds_exporter)

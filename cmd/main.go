@@ -27,7 +27,7 @@ var (
 
 func main() {
 	log.AddFlags(kingpin.CommandLine)
-	log.Infoln("Starting RDS exporter", version.Info())
+	log.Infoln("Starting Cloudwatch RDS exporter", version.Info())
 	log.Infoln("Build context", version.BuildContext())
 	kingpin.Parse()
 

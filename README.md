@@ -1,19 +1,17 @@
 # CloudWatch Prometheus Exporter
 
-[![Build Status](https://travis-ci.org/percona/rds_exporter.svg)](https://travis-ci.org/percona/rds_exporter)
-[![Go Report Card](https://goreportcard.com/badge/github.com/percona/rds_exporter)](https://goreportcard.com/report/github.com/percona/rds_exporter)
-[![CLA assistant](https://cla-assistant.percona.com/readme/badge/percona/rds_exporter)](https://cla-assistant.percona.com/percona/rds_exporter)
+![Go Build](https://github.com/theurichde/cloudwatch_rds_exporter/actions/workflows/go.yml/badge.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/percona/rds_exporter)](https://goreportcard.com/report/github.com/theurichde/cloudwatch_rds_exporter)
 
 An [AWS RDS](https://aws.amazon.com/ru/rds/) exporter for [Prometheus](https://github.com/prometheus/prometheus).
 It gets metrics from both [basic CloudWatch Metrics](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MonitoringOverview.html)
 and [RDS Enhanced Monitoring via CloudWatch Logs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Monitoring.OS.html).
 
-Based on [Technofy/cloudwatch_exporter](https://github.com/Technofy/cloudwatch_exporter),
-but very little of the original code remained.
+Based on [Technofy/cloudwatch_exporter](https://github.com/Technofy/cloudwatch_exporter) and [percona/rds_exporter](https://github.com/percona/rds_exporter).
 
 ## Quick start
 
-Create configration file `config.yml`:
+Create a configuration file `config.yml`:
 
 ```yaml
 ---
@@ -27,19 +25,19 @@ instances:
 ```
 
 If `aws_access_key` and `aws_secret_key` are present, they are used for that instance.
-Otherwise, [default credential provider chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
+Otherwise, the [default credential provider chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
 is used, which includes `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables, `~/.aws/credentials` file,
 and IAM role for EC2.
 
 
-Start exporter by running:
+Start the exporter by running:
 ```
-rds_exporter
+cloudwatch_rds_exporter --config.file="config.yaml"
 ```
 
 To see all flags run:
 ```
-rds_exporter --help
+cloudwatch_rds_exporter --help
 ```
 
 Configure Prometheus:
@@ -66,5 +64,5 @@ scrape_configs:
         - 127.0.0.1:9042
 ```
 
-`honor_labels: true` is important because exporter returns metrics with `instance` label set.
+`honor_labels: true` is important because the exporter returns metrics with `instance` label set.
 

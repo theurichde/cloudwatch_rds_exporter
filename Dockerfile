@@ -2,7 +2,7 @@
 FROM golang:1.16 AS builder
 WORKDIR /go/src/github.com/theurichde/cloudwatch_rds_exporter
 COPY . .
-RUN go build
+RUN go build -o cloudwatch_rds_exporter cmd/main.go
 
 FROM golang:1.16-buster AS app
 RUN apt-get install -y ca-certificates

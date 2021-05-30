@@ -1,10 +1,10 @@
-name: Main Build & Tests
+name: Unit Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [ * ]
   pull_request:
-    branches: [ main ]
+    branches: [ * ]
 
 jobs:
 
@@ -17,7 +17,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.16
+
       - name: Unit Tests
         run: go test -v ./... -tags independent
-      - name: Build
-        run: go build -v ./...

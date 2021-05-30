@@ -1,3 +1,6 @@
+// +build !independent
+// TODO: Tests use actual running instances within a real AWS Account which is pretty... you get it.
+
 package basic
 
 import (

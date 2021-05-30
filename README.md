@@ -1,6 +1,7 @@
 # CloudWatch Prometheus Exporter
 
-![Go Build](https://github.com/theurichde/cloudwatch_rds_exporter/actions/workflows/go.yml/badge.svg)
+![Go Build & Test](https://github.com/theurichde/cloudwatch_rds_exporter/actions/workflows/go.yml/badge.svg)
+
 [![Go Report Card](https://goreportcard.com/badge/github.com/percona/rds_exporter)](https://goreportcard.com/report/github.com/theurichde/cloudwatch_rds_exporter)
 
 An [AWS RDS](https://aws.amazon.com/ru/rds/) exporter for [Prometheus](https://github.com/prometheus/prometheus).

@@ -4,15 +4,19 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/percona/rds_exporter)](https://goreportcard.com/report/github.com/theurichde/cloudwatch_rds_exporter)
 
-An [AWS RDS](https://aws.amazon.com/ru/rds/) exporter for [Prometheus](https://github.com/prometheus/prometheus).
-It gets metrics from both [basic CloudWatch Metrics](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MonitoringOverview.html)
+This project contains an [AWS RDS](https://aws.amazon.com/rds) exporter for [Prometheus](https://github.com/prometheus/prometheus).
+It retrieves metrics from both [basic CloudWatch Metrics](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MonitoringOverview.html)
 and [RDS Enhanced Monitoring via CloudWatch Logs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Monitoring.OS.html).
 
-Based on [Technofy/cloudwatch_exporter](https://github.com/Technofy/cloudwatch_exporter) and [percona/rds_exporter](https://github.com/percona/rds_exporter).
+* Based on [Technofy/cloudwatch_exporter](https://github.com/Technofy/cloudwatch_exporter) and [percona/rds_exporter](https://github.com/percona/rds_exporter).
 
-## Quick start
+## Quick Start
 
-Create a configuration file `config.yml`:
+* Build the project from sources from the root folder
+
+`go build -o cloudwatch_rds_exporter cmd/main.go`
+
+* Create a configuration file `config.yml`:
 
 ```yaml
 ---
@@ -25,45 +29,32 @@ instances:
     aws_secret_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 ```
 
-If `aws_access_key` and `aws_secret_key` are present, they are used for that instance.
+* If `aws_access_key` and `aws_secret_key` are present, they are used for that instance.
 Otherwise, the [default credential provider chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
 is used, which includes `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables, `~/.aws/credentials` file,
 and IAM role for EC2.
 
 
-Start the exporter by running:
-```
-cloudwatch_rds_exporter --config.file="config.yaml"
-```
+* Start the exporter by running:
+    ```
+    cloudwatch_rds_exporter --config.file="config.yaml"
+    ```
 
-To see all flags run:
+* To see all flags run:
+    ```
+    cloudwatch_rds_exporter --help
+    ```
+
+## Run the Cloudwatch RDS Exporter via Docker
+* Create your config.yaml
+* Run the docker image
+  * Mount your config.yaml
+  * Either set your AWS Key and Secret via config.yaml (don't commit it anywhere) or via environment variables
+    
 ```
-cloudwatch_rds_exporter --help
-```
-
-Configure Prometheus:
-
-```yaml
----
-scrape_configs:
-  - job_name: rds-basic
-    scrape_interval: 60s
-    scrape_timeout: 55s
-    metrics_path: /basic
-    honor_labels: true
-    static_configs:
-      - targets:
-        - 127.0.0.1:9042
-
-  - job_name: rds-enhanced
-    scrape_interval: 10s
-    scrape_timeout: 9s
-    metrics_path: /enhanced
-    honor_labels: true
-    static_configs:
-      - targets:
-        - 127.0.0.1:9042
+$ docker run --rm -v $(pwd)/config.yaml:/opt/cloudwatch_rds_exporter/config.yaml theurichde/cloudwatch_rds_exporter
 ```
 
-`honor_labels: true` is important because the exporter returns metrics with `instance` label set.
-
+```
+$ docker run --rm --env AWS_ACCESS_KEY_ID=myKeyID --env AWS_SECRET_ACCESS_KEY=mySecretAccessKey -v $(pwd)/config.yaml:/opt/cloudwatch_rds_exporter/config.yaml theurichde/cloudwatch_rds_exporter
+```

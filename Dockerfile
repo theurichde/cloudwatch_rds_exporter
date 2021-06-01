@@ -5,8 +5,8 @@ COPY . .
 RUN go build -o cloudwatch_rds_exporter cmd/main.go
 
 FROM golang:1.16-buster AS app
-RUN apt-get install -y ca-certificates
-RUN groupadd -r cloudwatch_rds_exporter --gid 1000 && useradd --uid 1000 -g cloudwatch_rds_exporter -r -s /bin/bash cloudwatch_rds_exporter
+RUN apt-get update && apt-get install -y ca-certificates jq
+RUN groupadd -r cloudwatch_rds_exporter --gid 1000 && useradd --uid 1000 -g cloudwatch_rds_exporter -m -r -s /bin/bash cloudwatch_rds_exporter
 WORKDIR /opt/cloudwatch_rds_exporter
 COPY --from=builder /go/src/github.com/theurichde/cloudwatch_rds_exporter/cloudwatch_rds_exporter /usr/local/bin/cloudwatch_rds_exporter
 RUN chown cloudwatch_rds_exporter:cloudwatch_rds_exporter /usr/local/bin/cloudwatch_rds_exporter

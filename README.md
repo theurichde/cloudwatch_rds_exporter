@@ -5,10 +5,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/percona/rds_exporter)](https://goreportcard.com/report/github.com/theurichde/cloudwatch_rds_exporter)
 
 This project contains an [AWS RDS](https://aws.amazon.com/rds) exporter for [Prometheus](https://github.com/prometheus/prometheus).
+
 It retrieves metrics from both [basic CloudWatch Metrics](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/MonitoringOverview.html)
 and [RDS Enhanced Monitoring via CloudWatch Logs](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_Monitoring.OS.html).
 
-* Based on [Technofy/cloudwatch_exporter](https://github.com/Technofy/cloudwatch_exporter) and [percona/rds_exporter](https://github.com/percona/rds_exporter).
+* Based on [Technofy/cloudwatch_exporter](https://github.com/Technofy/cloudwatch_exporter) / [percona/rds_exporter](https://github.com/percona/rds_exporter) / [hellofresh/rds_exporter](https://github.com/hellofresh/rds_exporter)
 
 ## Quick Start
 
@@ -27,13 +28,17 @@ instances:
     region: us-east-1
     aws_access_key: AKIAIOSFODNN7EXAMPLE
     aws_secret_key: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+#credentials-process: /opt/retrieve-aws-credentials.sh # use me when you want to retrieve short-living credentials via an external process (eg via vault)
 ```
 
-* If `aws_access_key` and `aws_secret_key` are present, they are used for that instance.
-Otherwise, the [default credential provider chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
-is used, which includes `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables, `~/.aws/credentials` file,
-and IAM role for EC2.
-
+* If `aws_access_key` and `aws_secret_key` are present, they are used for that specific instance.
+* Otherwise, the [default credential provider chain](https://docs.aws.amazon.com/sdk-for-go/v1/developer-guide/configuring-sdk.html#specifying-credentials)
+is used, which includes 
+  * `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` environment variables
+  * `~/.aws/credentials`
+  * IAM role for EC2.
+* If you want to use an extra credentials process, set in your config: `credentials-process: /my/credentials/process.file`
+  
 
 * Start the exporter by running:
     ```

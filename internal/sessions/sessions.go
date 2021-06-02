@@ -2,6 +2,7 @@ package sessions
 
 import (
 	"fmt"
+	"github.com/aws/aws-sdk-go/aws/credentials/processcreds"
 	"net/http"
 	"os"
 	"text/tabwriter"
@@ -30,7 +31,8 @@ type Sessions struct {
 }
 
 // New creates a new sessions pool for given configuration.
-func New(instances []config.Instance, client *http.Client, trace bool) (*Sessions, error) {
+func New(config config.Config, client *http.Client, trace bool) (*Sessions, error) {
+	instances := config.Instances
 	logger := log.With("component", "sessions")
 	logger.Info("Creating sessions...")
 	res := &Sessions{
@@ -50,13 +52,15 @@ func New(instances []config.Instance, client *http.Client, trace bool) (*Session
 
 		// use given credentials, or default credential chain
 		var creds *credentials.Credentials
-		if instance.AWSAccessKey != "" || instance.AWSSecretKey != "" {
+		if instance.AWSAccessKey != "" && instance.AWSSecretKey != "" {
 			creds = credentials.NewCredentials(&credentials.StaticProvider{
 				Value: credentials.Value{
 					AccessKeyID:     instance.AWSAccessKey,
 					SecretAccessKey: instance.AWSSecretKey,
 				},
 			})
+		} else if config.CredentialsProcess != "" {
+			creds = processcreds.NewCredentials(config.CredentialsProcess)
 		}
 
 		// make config with careful logging

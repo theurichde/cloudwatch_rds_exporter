@@ -37,7 +37,7 @@ func main() {
 	}
 
 	client := client.New()
-	sess, err := sessions.New(cfg.Instances, client.HTTP(), *logTraceF)
+	sess, err := sessions.New(*cfg, client.HTTP(), *logTraceF)
 	if err != nil {
 		log.Fatalf("Can't create sessions: %s", err)
 	}
@@ -62,7 +62,7 @@ func main() {
 		}))
 	}
 
-	log.Infof("Basic metrics   : http://%s%s", *listenAddressF, *basicMetricsPathF)
-	log.Infof("Enhanced metrics: http://%s%s", *listenAddressF, *enhancedMetricsPathF)
+	log.Infof("Basic Metrics   : http://%s%s", *listenAddressF, *basicMetricsPathF)
+	log.Infof("Enhanced Metrics: http://%s%s", *listenAddressF, *enhancedMetricsPathF)
 	log.Fatal(http.ListenAndServe(*listenAddressF, nil))
 }

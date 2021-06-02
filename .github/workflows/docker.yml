@@ -29,16 +29,14 @@ jobs:
       - name: Build & Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          push: false
+          push: true
           tags: |
-            ${{ github.repository }}:${{ github.sha }}
             ${{ github.repository }}:${{ steps.derive-git-tag.outputs.tag }}
             ${{ github.repository }}:latest
       - name: Build & Push to GHCR
         uses: docker/build-push-action@v2
         with:
-          push: false
+          push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.sha }}
             ghcr.io/${{ github.repository }}:${{ steps.derive-git-tag.outputs.tag }}
             ghcr.io/${{ github.repository }}:latest
